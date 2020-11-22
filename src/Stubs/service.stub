@@ -1,0 +1,69 @@
+<?php
+namespace {{namespace}}Services;
+
+use {{namespace}}Repositories\{{Model}} as {{Model}}Repository;
+use Illuminate\Support\Facades\DB;
+
+class {{Model}} {
+    protected ${{models}};
+
+    public function __construct({{Model}}Repository ${{models}}) {
+        $this->{{models}} = ${{models}};
+    }
+
+    public function all() {
+      return $this->{{models}}->all();
+    }
+
+    public function store($data){
+        try {
+            DB::beginTransaction();
+            ${{models}} = $this->{{models}}->create($data);
+            DB::commit();
+            return ${{models}};
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception($e->getMessage(), 500);
+        }
+    }
+
+    public function update($data, $id){
+        try {
+            DB::beginTransaction();
+            $respuesta = $this->{{models}}->update($data, $id);
+            DB::commit();
+            if ($respuesta == 1) {
+                return $data;
+            } else {
+                throw new \Exception('No se pudo actualizar el registro, por favor inténtelo más tarde.', 500);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception($e->getMessage(), 500);
+        }
+    }
+
+    public function delete($id){
+        try {
+            DB::beginTransaction();
+            $respuesta = $this->{{models}}->delete($id);
+            DB::commit();
+            return $respuesta;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
+    public function paginate($perPage = 15, $columns = array('*'), $order_type = 'desc') {
+        return $this->{{models}}->paginate($perPage, $columns, $order_type);
+    }
+
+    public function find($id, $columns = array('*')) {
+        return $this->{{models}}->find($id, $columns);
+    }
+
+    public function findBy($field, $value, $columns = array('*')) {
+        return $this->{{models}}->findBy($field, $value, $columns);
+    }
+}

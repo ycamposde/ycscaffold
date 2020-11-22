@@ -1,0 +1,11 @@
+<?php namespace {{namespace}}Repositories;
+
+use {{namespace}}Repositories\Eloquent\Repository;
+
+class {{Model}} extends Repository {
+
+  function model()
+  {
+    return '{{namespace}}Models\{{Model}}';
+  }
+}

@@ -1,0 +1,63 @@
+<?php namespace {{namespace}}Http\Controllers\Api;
+
+use {{namespace}}Http\Controllers\Controller;
+use {{namespace}}Http\Requests\Store{{Model}};
+use {{namespace}}Services\{{Model}} as {{Model}}Service;
+
+class {{Model}}Controller extends Controller{
+    protected ${{model}}Service;
+
+    public function __construct({{Model}}Service ${{model}}Service)
+    {
+        $this->{{model}}Service = ${{model}}Service;
+    }
+
+    public function index(){
+        try {
+            return $this->{{model}}Service->all();
+        } catch (\Exception $e) {
+            $errors = [ 'message' => $e->getMessage() ];
+            throw new HttpResponseException(response()->json($errors, $e->getCode() == 0 ? 500: $e->getCode()));
+        }
+    }
+
+    public function store(Store{{Model}} $request){
+        try {
+            return $this->{{model}}Service->store($request->all());
+        } catch (\Exception $e) {
+            $errors = [ 'message' => $e->getCode() == 0 ? 'No se pudo crear el registro, por favor inténtelo más tarde.': $e->getMessage() ];
+            throw new HttpResponseException(response()->json($errors, $e->getCode() == 0 ? 500: $e->getCode()));
+        }
+    }
+
+    public function update(Store{{Model}} $request, ${{model}}_id){
+        try {
+            return $this->{{model}}Service->update($request-> all(), ${{model}}_id);
+        } catch (\Exception $e) {
+            $errors = [ 'message' => $e->getCode() == 0 ? 'No se pudo actualizar el registro, por favor inténtelo más tarde.': $e->getMessage() ];
+            throw new HttpResponseException(response()->json($errors, $e->getCode() == 0 ? 500: $e->getCode()));
+        }
+    }
+
+    public function destroy(${{model}}_id){
+        try {
+          return $this->{{model}}Service->delete(${{model}}_id);
+        } catch (\Exception $e) {
+            $typeDataGetCode = gettype($e->getCode());
+            $errors = [ 'message' => $e->getMessage()];
+            if ($typeDataGetCode == 'string' && $e->getCode() == '000000') {
+              $errors['message'] = 'No se pudo eliminar este registro, ya que pertenece a una acción de otro módulo';
+            }
+            throw new HttpResponseException(response()->json($errors, $e->getCode() == 0 || $typeDataGetCode != 'integer' ? 500: $e->getCode()));
+        }
+    }
+
+    public function show(${{model}}_id){
+        try {
+            return $this->{{model}}Service->find(${{model}}_id);
+        } catch (\Exception $e) {
+            $errors = [ 'message' => $e->getMessage() ];
+            throw new HttpResponseException(response()->json($errors, $e->getCode() == 0 ? 500: $e->getCode()));
+        }
+    }
+}

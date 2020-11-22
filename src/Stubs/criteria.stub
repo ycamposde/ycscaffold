@@ -1,0 +1,7 @@
+<?php namespace {{namespace}}Repositories\Criteria;
+
+use {{namespace}}Repositories\Contracts\Repository as RepositoryInterface;
+
+abstract class Criteria {
+  public abstract function apply($model, RepositoryInterface $repository);
+}
