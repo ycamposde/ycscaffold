@@ -20,7 +20,7 @@ composer require ycamposde/ycscaffold
 Open `config/app.php` and, to your **providers** array at the bottom, add:
 
 ```
-ycamposde\\GeneratorsServiceProvider::class
+ycamposde\ycscaffold\GeneratorsServiceProvider::class
 ```
 
 ### Step 3: Run Artisan!
