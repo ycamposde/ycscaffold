@@ -2,14 +2,14 @@
 
 use ycamposde\ycscaffold\DetectsApplicationNamespace;
 use Illuminate\Filesystem\Filesystem;
-use ycamposde\ycscaffold\Commands\;
+use ycamposde\ycscaffold\Commands\STScaffoldCommand;
 
 class MakeEloquent {
   use DetectsApplicationNamespace, MakerTrait;
 
   protected $scaffoldCommandObj;
 
-  function __construct( $scaffoldCommand, Filesystem $files)
+  function __construct(STScaffoldCommand $scaffoldCommand, Filesystem $files)
   {
     $this->files = $files;
     $this->scaffoldCommandObj = $scaffoldCommand;
